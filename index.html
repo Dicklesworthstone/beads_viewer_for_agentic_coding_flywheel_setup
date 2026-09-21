@@ -15,7 +15,7 @@
 
   <!-- Early theme detection - MUST be first to prevent flash -->
   <script>
-    (function() {
+    (() => {
       const stored = localStorage.getItem('darkMode');
       // Default to dark mode when no preference is stored
       if (stored === 'true' || stored === null) {
@@ -207,7 +207,7 @@
     // Cross-origin isolation via service worker for GitHub Pages
     // Uses controller check (not sessionStorage) to prevent infinite reload loops
     // iOS Safari doesn't support COI via SW - this safely handles that case
-    (function() {
+    (() => {
       // Already cross-origin isolated - nothing to do
       if (typeof crossOriginIsolated !== 'undefined' && crossOriginIsolated) {
         console.log('[COI] Already cross-origin isolated');
@@ -4106,7 +4106,7 @@
     mermaid.initialize(getMermaidConfig());
 
     // Expose for theme toggle re-initialization
-    window.reinitializeMermaid = function() {
+    window.reinitializeMermaid = () => {
       mermaid.initialize(getMermaidConfig());
     };
   </script>

@@ -10,15 +10,15 @@
  * License: MIT
  */
 
-const CACHE_NAME = 'beads-viewer-coi-v2';
+const CACHE_NAME = "beads-viewer-coi-v2";
 
 // Headers needed for cross-origin isolation
 // Using 'credentialless' instead of 'require-corp' to allow CDN resources
 // while still enabling SharedArrayBuffer for sql.js WASM performance.
 // 'credentialless' allows cross-origin resources without credentials (cookies).
 const COI_HEADERS = {
-  'Cross-Origin-Embedder-Policy': 'credentialless',
-  'Cross-Origin-Opener-Policy': 'same-origin',
+  "Cross-Origin-Embedder-Policy": "credentialless",
+  "Cross-Origin-Opener-Policy": "same-origin",
 };
 
 /**
@@ -34,17 +34,17 @@ function shouldAddHeaders(request) {
   // Add headers to HTML and JS files
   const pathname = url.pathname;
   if (
-    pathname.endsWith('.html') ||
-    pathname.endsWith('.js') ||
-    pathname.endsWith('/') ||
-    pathname === ''
+    pathname.endsWith(".html") ||
+    pathname.endsWith(".js") ||
+    pathname.endsWith("/") ||
+    pathname === ""
   ) {
     return true;
   }
 
   // Check accept header for HTML requests
-  const accept = request.headers.get('Accept') || '';
-  if (accept.includes('text/html')) {
+  const accept = request.headers.get("Accept") || "";
+  if (accept.includes("text/html")) {
     return true;
   }
 
@@ -70,25 +70,25 @@ function addCOIHeaders(response) {
 }
 
 // Install event
-self.addEventListener('install', (event) => {
-  console.log('[COI-SW] Installing service worker');
+self.addEventListener("install", (event) => {
+  console.log("[COI-SW] Installing service worker");
   // Take over immediately
   self.skipWaiting();
 });
 
 // Activate event
-self.addEventListener('activate', (event) => {
-  console.log('[COI-SW] Activating service worker');
+self.addEventListener("activate", (event) => {
+  console.log("[COI-SW] Activating service worker");
   // Take control of all clients immediately
   event.waitUntil(self.clients.claim());
 });
 
 // Fetch event - intercept requests and add COI headers
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const request = event.request;
 
   // Only process GET requests
-  if (request.method !== 'GET') {
+  if (request.method !== "GET") {
     return;
   }
 
@@ -104,33 +104,33 @@ self.addEventListener('fetch', (event) => {
         const response = await fetch(request);
 
         // Check if response is ok and we can modify it
-        if (!response.ok || response.type === 'opaque') {
+        if (!response.ok || response.type === "opaque") {
           return response;
         }
 
         // Add COI headers
         return addCOIHeaders(response);
       } catch (error) {
-        console.error('[COI-SW] Fetch error:', error);
+        console.error("[COI-SW] Fetch error:", error);
         throw error;
       }
-    })()
+    })(),
   );
 });
 
 // Message handler for control messages
-self.addEventListener('message', (event) => {
-  if (event.data === 'skipWaiting') {
+self.addEventListener("message", (event) => {
+  if (event.data === "skipWaiting") {
     self.skipWaiting();
   }
 
-  if (event.data === 'checkCOI') {
+  if (event.data === "checkCOI") {
     event.ports[0].postMessage({
       crossOriginIsolated: self.crossOriginIsolated,
-      coepHeader: COI_HEADERS['Cross-Origin-Embedder-Policy'],
-      coopHeader: COI_HEADERS['Cross-Origin-Opener-Policy'],
+      coepHeader: COI_HEADERS["Cross-Origin-Embedder-Policy"],
+      coopHeader: COI_HEADERS["Cross-Origin-Opener-Policy"],
     });
   }
 });
 
-console.log('[COI-SW] Service worker loaded');
+console.log("[COI-SW] Service worker loaded");

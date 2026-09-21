@@ -26,18 +26,14 @@
         "id": "issue-2",
         "title": "Test Issue 2",
         "score": 0.1302625,
-        "reasons": [
-          "✅ Currently unclaimed - available for work"
-        ],
+        "reasons": ["✅ Currently unclaimed - available for work"],
         "unblocks": 0
       },
       {
         "id": "issue-3",
         "title": "Test Issue 3",
         "score": 0.09257500000000002,
-        "reasons": [
-          "🚧 In progress - already being worked"
-        ],
+        "reasons": ["🚧 In progress - already being worked"],
         "unblocks": 0
       }
     ]
@@ -124,9 +120,7 @@
         }
       },
       "action": "Start work on this issue",
-      "reasons": [
-        "✅ Currently unclaimed - available for work"
-      ]
+      "reasons": ["✅ Currently unclaimed - available for work"]
     },
     {
       "id": "issue-3",
@@ -166,9 +160,7 @@
         }
       },
       "action": "Continue work on this issue",
-      "reasons": [
-        "🚧 In progress - already being worked"
-      ]
+      "reasons": ["🚧 In progress - already being worked"]
     }
   ],
   "quick_wins": [
